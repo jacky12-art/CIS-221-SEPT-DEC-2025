@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Inventory & Sales</h1>
+
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Sold</th>
+            <th>In Stock</th>
+            <th>Price</th>
+            <th>Total Earned</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>${{ item[3] }}</td>
+            <td>${{ "%.2f"|format(item[3] * item[4]) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Total Revenue: ${{ "%.2f"|format(total_sales) }}</h3>
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f9f9f9;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+    color: white;
+}
+
+.items {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    width: 200px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #000;
+    color: white;
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Inventory & Sales</h1>
+
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Sold</th>
+            <th>In Stock</th>
+            <th>Price</th>
+            <th>Total Earned</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>${{ item[3] }}</td>
+            <td>${{ "%.2f"|format(item[3] * item[4]) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Total Revenue: ${{ "%.2f"|format(total_sales) }}</h3>
+</body>
+</html>
+
+
+
+import sqlite3
+
+conn = sqlite3.connect('fashionstore.db')
+cursor = conn.cursor()
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS items (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    category TEXT,
+    price REAL,
+    quantity_sold INTEGER,
+    stock INTEGER
+)
+''')
+
+# Sample items
+items = [
+    ("Denim Jacket", "Jackets", 49.99, 10, 40),
+    ("Sneakers", "Shoes", 59.99, 5, 25),
+    ("Graphic T-Shirt", "Tops", 19.99, 20, 80),
+    ("Leather Bag", "Accessories", 89.99, 3, 17)
+]
+
+cursor.executemany("INSERT INTO items (name, category, price, quantity_sold, stock) VALUES (?, ?, ?, ?, ?)", items)
+conn.commit()
+conn.close()
+print("Database initialized.")
+
+
+import sqlite3
+
+conn = sqlite3.connect('fashionstore.db')
+cursor = conn.cursor()
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS items (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    category TEXT,
+    price REAL,
+    quantity_sold INTEGER,
+    stock INTEGER
+)
+''')
+
+# Sample items
+items = [
+    ("Denim Jacket", "Jackets", 49.99, 10, 40),
+    ("Sneakers", "Shoes", 59.99, 5, 25),
+    ("Graphic T-Shirt", "Tops", 19.99, 20, 80),
+    ("Leather Bag", "Accessories", 89.99, 3, 17)
+]
+
+cursor.executemany("INSERT INTO items (name, category, price, quantity_sold, stock) VALUES (?, ?, ?, ?, ?)", items)
+conn.commit()
+conn.close()
+print("Database initialized.")
+
+
+
+from flask import Flask, render_template
+import sqlite3
+
+app = Flask(__name__)
+
+def get_items():
+    conn = sqlite3.connect('fashionstore.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM items")
+    items = cursor.fetchall()
+    conn.close()
+    return items
+
+@app.route('/')
+def home():
+    items = get_items()
+    return render_template('index.html', items=items)
+
+@app.route('/inventory')
+def inventory():
+    items = get_items()
+    total_sales = sum(item[4] * item[5] for item in items)  # price * sold
+    return render_template('inventory.html', items=items, total_sales=total_sales)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+
