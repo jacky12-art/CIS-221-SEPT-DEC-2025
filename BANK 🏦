@@ -1,0 +1,116 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "37e8a4c7-97e6-4883-93c0-85fab9b3d9b3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1. Transaction Volume Array (4x6):\n",
+      " [[1200 1350 1600 1550 1700 1800]\n",
+      " [1500 1400 1450 1600 1750 1900]\n",
+      " [1100 1150 1200 1300 1400 1500]\n",
+      " [1800 1750 1900 2000 2100 2200]]\n",
+      "\n",
+      "2. Total Transactions per Branch:\n",
+      " [ 9200  9600  7650 11750]\n",
+      "\n",
+      "3. Branch with Highest Transactions: Branch 4\n",
+      "\n",
+      "4. Average Monthly Transaction Volume Across All Branches:\n",
+      " 1591.6666666666667\n",
+      "\n",
+      "5. Reshaped Array (3x8):\n",
+      " [[1200 1350 1600 1550 1700 1800 1500 1400]\n",
+      " [1450 1600 1750 1900 1100 1150 1200 1300]\n",
+      " [1400 1500 1800 1750 1900 2000 2100 2200]]\n",
+      "\n",
+      "Implication:\n",
+      "Reshaping changes only the *structure* of the data, not the values.\n",
+      "The logical meaning of branches vs months is lost when reshaping,\n",
+      "so the 3x8 format no longer represents branches or months clearly.\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "\n",
+    "# =========================\n",
+    "# 1. Create a 2D NumPy array (4 branches × 6 months)\n",
+    "# =========================\n",
+    "\n",
+    "# Example transaction volumes (you can replace with real data)\n",
+    "transactions = np.array([\n",
+    "    [1200, 1350, 1600, 1550, 1700, 1800],   # Branch 1\n",
+    "    [1500, 1400, 1450, 1600, 1750, 1900],   # Branch 2\n",
+    "    [1100, 1150, 1200, 1300, 1400, 1500],   # Branch 3\n",
+    "    [1800, 1750, 1900, 2000, 2100, 2200]    # Branch 4\n",
+    "])\n",
+    "\n",
+    "print(\"1. Transaction Volume Array (4x6):\\n\", transactions)\n",
+    "\n",
+    "# =========================\n",
+    "# 2. Total transactions per branch\n",
+    "# =========================\n",
+    "total_per_branch = np.sum(transactions, axis=1)\n",
+    "print(\"\\n2. Total Transactions per Branch:\\n\", total_per_branch)\n",
+    "\n",
+    "# =========================\n",
+    "# 3. Branch with the highest total transactions\n",
+    "# =========================\n",
+    "highest_branch_index = np.argmax(total_per_branch)\n",
+    "print(\"\\n3. Branch with Highest Transactions: Branch\", highest_branch_index + 1)\n",
+    "\n",
+    "# =========================\n",
+    "# 4. Average monthly transaction volume across all branches\n",
+    "# =========================\n",
+    "average_monthly = np.mean(transactions)\n",
+    "print(\"\\n4. Average Monthly Transaction Volume Across All Branches:\\n\", average_monthly)\n",
+    "\n",
+    "# =========================\n",
+    "# 5. Reshape to 3x8 and implications\n",
+    "# =========================\n",
+    "reshaped_array = transactions.reshape(3, 8)\n",
+    "print(\"\\n5. Reshaped Array (3x8):\\n\", reshaped_array)\n",
+    "\n",
+    "print(\"\\nImplication:\")\n",
+    "print(\"Reshaping changes only the *structure* of the data, not the values.\")\n",
+    "print(\"The logical meaning of branches vs months is lost when reshaping,\")\n",
+    "print(\"so the 3x8 format no longer represents branches or months clearly.\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9a726c89-8378-4fde-9d0e-752617558042",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
